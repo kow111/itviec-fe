@@ -19,6 +19,10 @@ const LoginPage = () => {
     (state) => state.account.isAuthenticated
   );
 
+  let location = useLocation();
+  let params = new URLSearchParams(location.search);
+  const callback = params?.get("callback");
+
   useEffect(() => {
     //đã login => redirect to '/'
     if (isAuthenticated) {
@@ -36,7 +40,11 @@ const LoginPage = () => {
       localStorage.setItem("access_token", res.data.access_token);
       dispatch(setUserLoginInfo(res.data.user));
       message.success("Đăng nhập tài khoản thành công!");
-      navigate("/");
+      if (callback) {
+        navigate(callback);
+      } else {
+        navigate("/");
+      }
     } else {
       notification.error({
         message: "Có lỗi xảy ra",
@@ -76,9 +84,14 @@ const LoginPage = () => {
             <Input.Password />
           </Form.Item>
 
-          <Form.Item className="text-end">
-            <Button type="primary" htmlType="submit" loading={isSubmit}>
-              Submit
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={isSubmit}
+              className="w-full"
+            >
+              Đăng nhập
             </Button>
           </Form.Item>
         </Form>

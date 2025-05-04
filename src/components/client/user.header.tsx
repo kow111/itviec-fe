@@ -103,7 +103,7 @@ const UserHeader = () => {
         <div>
           <div style={{ display: "flex", gap: 30 }}>
             <div>
-              <FaReact onClick={() => navigate("/")} title="Hỏi Dân IT" />
+              <FaReact onClick={() => navigate("/")} title="ITviec" />
             </div>
             <div>
               <ConfigProvider
