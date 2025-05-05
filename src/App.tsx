@@ -6,6 +6,8 @@ import RegisterPage from "./pages/auth/register";
 import { useEffect } from "react";
 import { useAppDispatch } from "./redux/hooks";
 import { fetchAccount } from "./redux/slice/account.slice";
+import AdminLayout from "./components/admin/admin.layout";
+import CompanyPage from "./pages/admin/company";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -26,6 +28,10 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<UserLayout />}>
           <Route index element={<HomePage />} />
+        </Route>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<>Hello</>} />
+          <Route path="company" element={<CompanyPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
