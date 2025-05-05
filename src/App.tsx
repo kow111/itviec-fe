@@ -3,8 +3,22 @@ import LoginPage from "./pages/auth/login";
 import UserLayout from "./components/layouts/user.layout";
 import HomePage from "./pages/home";
 import RegisterPage from "./pages/auth/register";
+import { useEffect } from "react";
+import { useAppDispatch } from "./redux/hooks";
+import { fetchAccount } from "./redux/slice/account.slice";
 
 function App() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (
+      window.location.pathname === "/login" ||
+      window.location.pathname === "/register"
+    )
+      return;
+    dispatch(fetchAccount());
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>

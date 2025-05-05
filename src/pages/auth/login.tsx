@@ -1,4 +1,4 @@
-import { Button, Divider, Form, Input, message, notification } from "antd";
+import { App, Button, Divider, Form, Input } from "antd";
 import { Link, useLocation, useNavigate } from "react-router";
 import { callLogin } from "../../service/auth.api";
 import { useState, useEffect } from "react";
@@ -12,6 +12,7 @@ type FieldType = {
 };
 
 const LoginPage = () => {
+  const { message, notification } = App.useApp();
   const navigate = useNavigate();
   const [isSubmit, setIsSubmit] = useState(false);
   const dispatch = useDispatch();

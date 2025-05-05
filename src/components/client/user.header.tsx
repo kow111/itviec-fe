@@ -7,16 +7,18 @@ import {
   RiseOutlined,
   TwitterOutlined,
 } from "@ant-design/icons";
-import { Avatar, Drawer, Dropdown, MenuProps, Space, message } from "antd";
-import { Menu, ConfigProvider } from "antd";
+import { App, Avatar, Dropdown, MenuProps, Space } from "antd";
+import { Menu } from "antd";
 import { FaReact } from "react-icons/fa";
 import { useLocation, useNavigate, Link } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { callLogout } from "../../service/auth.api";
 import { setLogoutAction } from "../../redux/slice/account.slice";
+import { Header } from "antd/es/layout/layout";
 // import ManageAccount from './modal/manage.account';
 
 const UserHeader = () => {
+  const { message } = App.useApp();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -24,9 +26,8 @@ const UserHeader = () => {
     (state) => state.account.isAuthenticated
   );
   const user = useAppSelector((state) => state.account.user);
-  const [openMobileMenu, setOpenMobileMenu] = useState<boolean>(false);
 
-  const [current, setCurrent] = useState("home");
+  const [current, setCurrent] = useState("");
   const location = useLocation();
 
   const [openMangeAccount, setOpenManageAccount] = useState<boolean>(false);
@@ -98,67 +99,34 @@ const UserHeader = () => {
   const itemsMobiles = [...items, ...itemsDropdown];
 
   return (
-    <>
-      <div>
-        <div>
-          <div style={{ display: "flex", gap: 30 }}>
-            <div>
-              <FaReact onClick={() => navigate("/")} title="ITviec" />
-            </div>
-            <div>
-              <ConfigProvider
-                theme={{
-                  token: {
-                    colorPrimary: "#fff",
-                    colorBgContainer: "#222831",
-                    colorText: "#a7a7a7",
-                  },
-                }}
-              >
-                <Menu
-                  // onClick={onClick}
-                  selectedKeys={[current]}
-                  mode="horizontal"
-                  items={items}
-                />
-              </ConfigProvider>
-              <div>
-                {isAuthenticated === false ? (
-                  <Link to={"/login"}>Đăng Nhập</Link>
-                ) : (
-                  <Dropdown menu={{ items: itemsDropdown }} trigger={["click"]}>
-                    <Space style={{ cursor: "pointer" }}>
-                      <span>Welcome {user?.name}</span>
-                      <Avatar>
-                        {" "}
-                        {user?.name?.substring(0, 2)?.toUpperCase()}{" "}
-                      </Avatar>
-                    </Space>
-                  </Dropdown>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
+    <Header style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+      <div className="text-3xl text-blue-500 font-bold cursor-pointer">
+        <FaReact onClick={() => navigate("/")} title="Hỏi Dân IT" />
       </div>
-      <Drawer
-        title="Chức năng"
-        placement="right"
-        onClose={() => setOpenMobileMenu(false)}
-        open={openMobileMenu}
-      >
+      <div className="flex items-center justify-between w-full">
         <Menu
           onClick={onClick}
           selectedKeys={[current]}
-          mode="vertical"
-          items={itemsMobiles}
+          theme="dark"
+          mode="horizontal"
+          items={items}
+          style={{ flex: 1, minWidth: 0 }}
         />
-      </Drawer>
-      {/* <ManageAccount
-                open={openMangeAccount}
-                onClose={setOpenManageAccount}
-            /> */}
-    </>
+        <div className="flex items-center gap-2">
+          {isAuthenticated ? (
+            <Dropdown menu={{ items: itemsDropdown }} trigger={["click"]}>
+              <Space style={{ cursor: "pointer" }}>
+                <span className="text-gray-200">Welcome {user?.name}</span>
+                <Avatar> {user?.name?.substring(0, 2)?.toUpperCase()} </Avatar>
+              </Space>
+            </Dropdown>
+          ) : (
+            <Link to={"/login"}>Đăng Nhập</Link>
+          )}
+        </div>
+      </div>
+      {/* <ManageAccount open={openMangeAccount} setOpen={setOpenManageAccount} /> */}
+    </Header>
   );
 };
 
