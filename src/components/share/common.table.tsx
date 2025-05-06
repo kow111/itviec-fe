@@ -13,7 +13,12 @@ interface CommonTableProps<T> extends TableProps<T> {
   columns: TableProps<T>["columns"];
   rowKey?: string | ((record: T) => string);
   pagination?: PaginationProps;
-  handleTableChange?: (pagination: PaginationProps) => void;
+  handleTableChange?: (
+    pagination: PaginationProps,
+    filters: any,
+    sorter: any,
+    extra: any
+  ) => void;
 }
 
 const CommonTable = <T extends object>({
@@ -35,9 +40,14 @@ const CommonTable = <T extends object>({
         showSizeChanger: true,
         pageSizeOptions: [5, 10, 20, 50],
       }}
-      onChange={(pagination) => {
+      onChange={(pagination, filters, sorter, extra) => {
         if (handleTableChange) {
-          handleTableChange(pagination as PaginationProps);
+          handleTableChange(
+            pagination as PaginationProps,
+            filters,
+            sorter,
+            extra
+          );
         }
       }}
     />

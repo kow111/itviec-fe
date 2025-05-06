@@ -8,6 +8,7 @@ import { useAppDispatch } from "./redux/hooks";
 import { fetchAccount } from "./redux/slice/account.slice";
 import AdminLayout from "./components/admin/admin.layout";
 import CompanyPage from "./pages/admin/company";
+import UserPage from "./pages/admin/user";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -32,6 +33,7 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<>Hello</>} />
           <Route path="company" element={<CompanyPage />} />
+          <Route path="user" element={<UserPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

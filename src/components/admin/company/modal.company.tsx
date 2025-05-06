@@ -1,7 +1,6 @@
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   Col,
-  ConfigProvider,
   Form,
   Input,
   Modal,
@@ -19,7 +18,6 @@ import {
 } from "../../../service/company.api";
 import { ICompany } from "../../../types/backend";
 import { v4 as uuidv4 } from "uuid";
-import enUS from "antd/lib/locale/en_US";
 import { callUploadSingleFile } from "../../../service/upload.api";
 import TextArea from "antd/es/input/TextArea";
 
@@ -114,7 +112,7 @@ const ModalCompany = (props: IProps) => {
     setOpenModal(false);
   };
 
-  const handleRemoveFile = (file: any) => {
+  const handleRemoveFile = () => {
     setDataLogo([]);
   };
 
@@ -259,43 +257,35 @@ const ModalCompany = (props: IProps) => {
                       },
                     ]}
                   >
-                    <ConfigProvider locale={enUS}>
-                      <Upload
-                        name="logo"
-                        listType="picture-card"
-                        className="avatar-uploader"
-                        maxCount={1}
-                        multiple={false}
-                        customRequest={handleUploadFileLogo}
-                        beforeUpload={beforeUpload}
-                        onChange={handleChange}
-                        onRemove={(file) => handleRemoveFile(file)}
-                        onPreview={handlePreview}
-                        defaultFileList={
-                          dataInit?._id
-                            ? [
-                                {
-                                  uid: uuidv4(),
-                                  name: dataInit?.logo ?? "",
-                                  status: "done",
-                                  url: `${
-                                    import.meta.env.VITE_BACKEND_URL
-                                  }/images/company/${dataInit?.logo}`,
-                                },
-                              ]
-                            : []
-                        }
-                      >
-                        <div>
-                          {loadingUpload ? (
-                            <LoadingOutlined />
-                          ) : (
-                            <PlusOutlined />
-                          )}
-                          <div style={{ marginTop: 8 }}>Upload</div>
-                        </div>
-                      </Upload>
-                    </ConfigProvider>
+                    <Upload
+                      name="logo"
+                      listType="picture-card"
+                      className="avatar-uploader"
+                      maxCount={1}
+                      multiple={false}
+                      customRequest={handleUploadFileLogo}
+                      beforeUpload={beforeUpload}
+                      onChange={handleChange}
+                      onRemove={handleRemoveFile}
+                      onPreview={handlePreview}
+                      defaultFileList={
+                        dataInit?._id
+                          ? [
+                              {
+                                uid: uuidv4(),
+                                name: dataInit?.logo ?? "",
+                                status: "done",
+                                url: dataInit?.logo,
+                              },
+                            ]
+                          : []
+                      }
+                    >
+                      <div>
+                        {loadingUpload ? <LoadingOutlined /> : <PlusOutlined />}
+                        <div style={{ marginTop: 8 }}>Upload</div>
+                      </div>
+                    </Upload>
                   </Form.Item>
                 </Col>
 

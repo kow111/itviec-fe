@@ -1,35 +1,41 @@
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { fetchCompany } from "../../redux/slice/company.slice";
-import { ICompany } from "../../types/backend";
+import { fetchUser } from "../../redux/slice/user.slice";
+import { IUser } from "../../types/backend";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
-import { App, Button, Popconfirm, Space, TableProps, Typography } from "antd";
-import { useState, useEffect } from "react";
+import {
+  Button,
+  Popconfirm,
+  Space,
+  TableProps,
+  Typography,
+  message,
+  notification,
+} from "antd";
+import { useState, useRef, useEffect } from "react";
 import dayjs from "dayjs";
-import { callDeleteCompany } from "../../service/company.api";
+import { callDeleteUser } from "../../service/user.api";
+import queryString from "query-string";
+// import ModalUser from "@/components/admin/user/modal.user";
+// import ViewDetailUser from "@/components/admin/user/view.user";
 import Access from "../../components/share/access";
 import { ALL_PERMISSIONS } from "../../config/permissions";
 import CommonTable from "../../components/share/common.table";
-import queryString from "query-string";
-import ModalCompany from "../../components/admin/company/modal.company";
-import DetailDrawer from "../../components/common/view.detail";
-import HTMLReactParser from "html-react-parser/lib/index";
 
-const CompanyPage = () => {
-  const { message, notification } = App.useApp();
+const UserPage = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [openDetail, setOpenDetail] = useState<boolean>(false);
-  const [dataInit, setDataInit] = useState<ICompany | null>(null);
+  const [dataInit, setDataInit] = useState<IUser | null>(null);
+  const [openViewDetail, setOpenViewDetail] = useState<boolean>(false);
 
-  const isFetching = useAppSelector((state) => state.company.isFetching);
-  const meta = useAppSelector((state) => state.company.meta);
-  const companies = useAppSelector((state) => state.company.result);
+  const isFetching = useAppSelector((state) => state.user.isFetching);
+  const meta = useAppSelector((state) => state.user.meta);
+  const users = useAppSelector((state) => state.user.result);
   const dispatch = useAppDispatch();
 
-  const handleDeleteCompany = async (_id: string | undefined) => {
+  const handleDeleteUser = async (_id: string | undefined) => {
     if (_id) {
-      const res = await callDeleteCompany(_id);
+      const res = await callDeleteUser(_id);
       if (res && res.data) {
-        message.success("Xóa Company thành công");
+        message.success("Xóa User thành công");
         reloadTable();
       } else {
         notification.error({
@@ -40,52 +46,29 @@ const CompanyPage = () => {
     }
   };
 
-  const columnsDetail = [
-    {
-      label: "Id",
-      key: "_id",
-    },
-    {
-      label: "Name",
-      key: "name",
-    },
-    {
-      label: "Address",
-      key: "address",
-    },
-    {
-      label: "Created At",
-      key: "createdAt",
-      render: (text: string) => {
-        return <span>{dayjs(text).format("DD/MM/YYYY")}</span>;
+  const reloadTable = () => {
+    const query = buildQuery(
+      {
+        current: meta.current,
+        pageSize: meta.pageSize,
       },
-    },
-    {
-      label: "Updated At",
-      key: "updatedAt",
-      render: (text: string) => {
-        return <span>{dayjs(text).format("DD/MM/YYYY")}</span>;
-      },
-    },
-    {
-      label: "Description",
-      key: "description",
-      render: (text: string) => {
-        return <span>{HTMLReactParser(text)}</span>;
-      },
-    },
-  ];
+      {},
+      {}
+    );
+    dispatch(fetchUser({ query }));
+  };
 
-  const columns: TableProps<ICompany>["columns"] = [
+  const columns: TableProps<IUser>["columns"] = [
     {
       title: "Id",
       dataIndex: "_id",
       width: 250,
-      render: (_, record) => {
+      render: (text, record) => {
         return (
           <a
+            href="#"
             onClick={() => {
-              setOpenDetail(true);
+              setOpenViewDetail(true);
               setDataInit(record);
             }}
           >
@@ -100,15 +83,17 @@ const CompanyPage = () => {
       sorter: true,
     },
     {
-      title: "Address",
-      dataIndex: "address",
+      title: "Email",
+      dataIndex: "email",
+      sorter: true,
     },
+
     {
       title: "Actions",
       width: 50,
       render: (_value, entity) => (
         <Space>
-          <Access permission={ALL_PERMISSIONS.COMPANIES.UPDATE} hideChildren>
+          <Access permission={ALL_PERMISSIONS.USERS.UPDATE} hideChildren>
             <EditOutlined
               style={{
                 fontSize: 20,
@@ -121,12 +106,13 @@ const CompanyPage = () => {
               }}
             />
           </Access>
-          <Access permission={ALL_PERMISSIONS.COMPANIES.DELETE} hideChildren>
+
+          <Access permission={ALL_PERMISSIONS.USERS.DELETE} hideChildren>
             <Popconfirm
               placement="leftTop"
-              title={"Xác nhận xóa company"}
-              description={"Bạn có chắc chắn muốn xóa company này ?"}
-              onConfirm={() => handleDeleteCompany(entity._id)}
+              title={"Xác nhận xóa user"}
+              description={"Bạn có chắc chắn muốn xóa user này ?"}
+              onConfirm={() => handleDeleteUser(entity._id)}
               okText="Xác nhận"
               cancelText="Hủy"
             >
@@ -148,7 +134,7 @@ const CompanyPage = () => {
   const buildQuery = (params: any, sort: any, filter: any) => {
     const clone = { ...params };
     if (clone.name) clone.name = `/${clone.name}/i`;
-    if (clone.address) clone.address = `/${clone.address}/i`;
+    if (clone.email) clone.email = `/${clone.email}/i`;
 
     let temp = queryString.stringify(clone);
 
@@ -156,8 +142,8 @@ const CompanyPage = () => {
     if (sort && sort.name) {
       sortBy = sort.name === "ascend" ? "sort=name" : "sort=-name";
     }
-    if (sort && sort.address) {
-      sortBy = sort.address === "ascend" ? "sort=address" : "sort=-address";
+    if (sort && sort.email) {
+      sortBy = sort.email === "ascend" ? "sort=email" : "sort=-email";
     }
     if (sort && sort.createdAt) {
       sortBy =
@@ -168,11 +154,14 @@ const CompanyPage = () => {
         sort.updatedAt === "ascend" ? "sort=updatedAt" : "sort=-updatedAt";
     }
 
+    //mặc định sort theo updatedAt
     if (Object.keys(sortBy).length === 0) {
       temp = `${temp}&sort=-createdAt`;
     } else {
       temp = `${temp}&${sortBy}`;
     }
+    temp +=
+      "&populate=role,company&fields=role._id, role.name, company._id, company.name";
 
     return temp;
   };
@@ -197,19 +186,7 @@ const CompanyPage = () => {
       filters
     );
 
-    dispatch(fetchCompany({ query }));
-  };
-
-  const reloadTable = () => {
-    const query = buildQuery(
-      {
-        current: meta.current,
-        pageSize: meta.pageSize,
-      },
-      {},
-      {}
-    );
-    dispatch(fetchCompany({ query }));
+    dispatch(fetchUser({ query }));
   };
 
   useEffect(() => {
@@ -221,14 +198,14 @@ const CompanyPage = () => {
       {},
       {}
     );
-    dispatch(fetchCompany({ query }));
+    dispatch(fetchUser({ query }));
   }, []);
 
   return (
     <div>
-      <Access permission={ALL_PERMISSIONS.COMPANIES.GET_PAGINATE}>
-        <Typography.Title level={3}>Danh sách công ty</Typography.Title>
-        <Access permission={ALL_PERMISSIONS.COMPANIES.CREATE} hideChildren>
+      <Access permission={ALL_PERMISSIONS.USERS.GET_PAGINATE}>
+        <Typography.Title level={3}>Danh sách người dùng</Typography.Title>
+        <Access permission={ALL_PERMISSIONS.USERS.CREATE} hideChildren>
           <Button
             icon={<PlusOutlined />}
             type="primary"
@@ -238,38 +215,34 @@ const CompanyPage = () => {
             Thêm mới
           </Button>
         </Access>
-        <CommonTable<ICompany>
+        <CommonTable<IUser>
           columns={columns}
-          data={companies}
+          data={users}
+          rowKey="_id"
           loading={isFetching}
           pagination={{
-            pageSize: meta.pageSize,
             current: meta.current,
+            pageSize: meta.pageSize,
             total: meta.total,
           }}
           handleTableChange={handleTableChange}
         />
       </Access>
-      <ModalCompany
+      {/* <ModalUser
         openModal={openModal}
         setOpenModal={setOpenModal}
         reloadTable={reloadTable}
         dataInit={dataInit}
         setDataInit={setDataInit}
       />
-      <DetailDrawer
-        open={openDetail}
-        title="Chi tiết công ty"
-        columns={columnsDetail}
-        data={dataInit}
-        onClose={() => {
-          setOpenDetail(false);
-          setDataInit(null);
-        }}
-        width={600}
-      />
+      <ViewDetailUser
+        onClose={setOpenViewDetail}
+        open={openViewDetail}
+        dataInit={dataInit}
+        setDataInit={setDataInit}
+      /> */}
     </div>
   );
 };
 
-export default CompanyPage;
+export default UserPage;
