@@ -212,115 +212,107 @@ const ModalCompany = (props: IProps) => {
 
   return (
     <>
-      {openModal && (
-        <>
-          <Modal
-            title={
-              <>{dataInit?._id ? "Cập nhật Company" : "Tạo mới Company"}</>
-            }
-            open={openModal}
-            width={800}
-            onOk={form.submit}
-            onCancel={handleReset}
-          >
-            <Form
-              name="layout-multiple-horizontal"
-              layout="vertical"
-              form={form}
-              onFinish={submitCompany}
-            >
-              <Row gutter={16}>
-                <Col span={24}>
-                  <Form.Item
-                    label="Tên công ty"
-                    name="name"
-                    rules={[
-                      { required: true, message: "Vui lòng không bỏ trống" },
-                    ]}
-                  >
-                    <Input placeholder="Tên công ty" />
-                  </Form.Item>
-                </Col>
-                <Col span={8}>
-                  <Form.Item
-                    labelCol={{ span: 24 }}
-                    label="Ảnh Logo"
-                    name="logo"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng không bỏ trống",
-                        validator: () => {
-                          if (dataLogo.length > 0) return Promise.resolve();
-                          else return Promise.reject(false);
-                        },
-                      },
-                    ]}
-                  >
-                    <Upload
-                      name="logo"
-                      listType="picture-card"
-                      className="avatar-uploader"
-                      maxCount={1}
-                      multiple={false}
-                      customRequest={handleUploadFileLogo}
-                      beforeUpload={beforeUpload}
-                      onChange={handleChange}
-                      onRemove={handleRemoveFile}
-                      onPreview={handlePreview}
-                      defaultFileList={
-                        dataInit?._id
-                          ? [
-                              {
-                                uid: uuidv4(),
-                                name: dataInit?.logo ?? "",
-                                status: "done",
-                                url: dataInit?.logo,
-                              },
-                            ]
-                          : []
-                      }
-                    >
-                      <div>
-                        {loadingUpload ? <LoadingOutlined /> : <PlusOutlined />}
-                        <div style={{ marginTop: 8 }}>Upload</div>
-                      </div>
-                    </Upload>
-                  </Form.Item>
-                </Col>
+      <Modal
+        title={<>{dataInit?._id ? "Cập nhật Company" : "Tạo mới Company"}</>}
+        open={openModal}
+        width={800}
+        onOk={form.submit}
+        onCancel={handleReset}
+      >
+        <Form
+          name="layout-multiple-horizontal"
+          layout="vertical"
+          form={form}
+          onFinish={submitCompany}
+        >
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item
+                label="Tên công ty"
+                name="name"
+                rules={[{ required: true, message: "Vui lòng không bỏ trống" }]}
+              >
+                <Input placeholder="Tên công ty" />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                labelCol={{ span: 24 }}
+                label="Ảnh Logo"
+                name="logo"
+                rules={[
+                  {
+                    required: true,
+                    message: "Vui lòng không bỏ trống",
+                    validator: () => {
+                      if (dataLogo.length > 0) return Promise.resolve();
+                      else return Promise.reject(false);
+                    },
+                  },
+                ]}
+              >
+                <Upload
+                  name="logo"
+                  listType="picture-card"
+                  className="avatar-uploader"
+                  maxCount={1}
+                  multiple={false}
+                  customRequest={handleUploadFileLogo}
+                  beforeUpload={beforeUpload}
+                  onChange={handleChange}
+                  onRemove={handleRemoveFile}
+                  onPreview={handlePreview}
+                  defaultFileList={
+                    dataInit?._id
+                      ? [
+                          {
+                            uid: uuidv4(),
+                            name: dataInit?.logo ?? "",
+                            status: "done",
+                            url: dataInit?.logo,
+                          },
+                        ]
+                      : []
+                  }
+                >
+                  <div>
+                    {loadingUpload ? <LoadingOutlined /> : <PlusOutlined />}
+                    <div style={{ marginTop: 8 }}>Upload</div>
+                  </div>
+                </Upload>
+              </Form.Item>
+            </Col>
 
-                <Col span={16}>
-                  <Form.Item
-                    label="Địa chỉ"
-                    name="address"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Địa chỉ không được để trống!",
-                      },
-                    ]}
-                  >
-                    <TextArea />
-                  </Form.Item>
-                </Col>
+            <Col span={16}>
+              <Form.Item
+                label="Địa chỉ"
+                name="address"
+                rules={[
+                  {
+                    required: true,
+                    message: "Địa chỉ không được để trống!",
+                  },
+                ]}
+              >
+                <TextArea />
+              </Form.Item>
+            </Col>
 
-                <Col span={24}>
-                  <ReactQuill theme="snow" value={value} onChange={setValue} />
-                </Col>
-              </Row>
-            </Form>
-          </Modal>
-          <Modal
-            open={previewOpen}
-            title={previewTitle}
-            footer={null}
-            onCancel={() => setPreviewOpen(false)}
-            style={{ zIndex: 1500 }}
-          >
-            <img alt="example" style={{ width: "100%" }} src={previewImage} />
-          </Modal>
-        </>
-      )}
+            <Col span={24}>
+              <ReactQuill theme="snow" value={value} onChange={setValue} />
+            </Col>
+          </Row>
+        </Form>
+      </Modal>
+      <Modal
+        open={previewOpen}
+        title={previewTitle}
+        footer={null}
+        onCancel={() => setPreviewOpen(false)}
+        style={{ zIndex: 1500 }}
+      >
+        <img alt="example" style={{ width: "100%" }} src={previewImage} />
+      </Modal>
     </>
   );
 };

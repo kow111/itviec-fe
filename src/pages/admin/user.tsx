@@ -20,6 +20,8 @@ import queryString from "query-string";
 import Access from "../../components/share/access";
 import { ALL_PERMISSIONS } from "../../config/permissions";
 import CommonTable from "../../components/share/common.table";
+import DetailDrawer from "../../components/common/view.detail";
+import ModalUser from "../../components/admin/user/modal.user";
 
 const UserPage = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -57,6 +59,57 @@ const UserPage = () => {
     );
     dispatch(fetchUser({ query }));
   };
+
+  const columnsDetail = [
+    {
+      label: "Id",
+      key: "_id",
+    },
+    {
+      label: "Name",
+      key: "name",
+    },
+    {
+      label: "Email",
+      key: "email",
+    },
+    {
+      label: "Gender",
+      key: "gender",
+    },
+    {
+      label: "Age",
+      key: "age",
+    },
+    {
+      label: "Company",
+      key: "company",
+      render: (text: any) => {
+        return <span>{text?.name}</span>;
+      },
+    },
+    {
+      label: "Role",
+      key: "role",
+      render: (text: any) => {
+        return <span>{text?.name}</span>;
+      },
+    },
+    {
+      label: "Created At",
+      key: "createdAt",
+      render: (text: string) => {
+        return <span>{dayjs(text).format("DD/MM/YYYY")}</span>;
+      },
+    },
+    {
+      label: "Updated At",
+      key: "updatedAt",
+      render: (text: string) => {
+        return <span>{dayjs(text).format("DD/MM/YYYY")}</span>;
+      },
+    },
+  ];
 
   const columns: TableProps<IUser>["columns"] = [
     {
@@ -228,19 +281,24 @@ const UserPage = () => {
           handleTableChange={handleTableChange}
         />
       </Access>
-      {/* <ModalUser
+      <ModalUser
         openModal={openModal}
         setOpenModal={setOpenModal}
         reloadTable={reloadTable}
         dataInit={dataInit}
         setDataInit={setDataInit}
       />
-      <ViewDetailUser
-        onClose={setOpenViewDetail}
+      <DetailDrawer
         open={openViewDetail}
-        dataInit={dataInit}
-        setDataInit={setDataInit}
-      /> */}
+        title="Chi tiết công ty"
+        columns={columnsDetail}
+        data={dataInit}
+        onClose={() => {
+          setOpenViewDetail(false);
+          setDataInit(null);
+        }}
+        width={600}
+      />
     </div>
   );
 };

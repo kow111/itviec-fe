@@ -1,5 +1,6 @@
 import { Drawer, Descriptions } from "antd";
 import React from "react";
+import { renderEmptyCell } from "./render.empty";
 
 interface ColumnItem {
   label: string;
@@ -36,7 +37,9 @@ const DetailDrawer: React.FC<DetailDrawerProps> = ({
         <Descriptions column={1} bordered>
           {columns.map((col) => (
             <Descriptions.Item label={col.label} key={col.key}>
-              {col.render ? col.render(data[col.key], data) : data[col.key]}
+              {col.render
+                ? col.render(data[col.key], data)
+                : renderEmptyCell(data[col.key])}
             </Descriptions.Item>
           ))}
         </Descriptions>
