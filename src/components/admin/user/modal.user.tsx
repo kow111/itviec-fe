@@ -55,7 +55,6 @@ const ModalUser = (props: IProps) => {
   const submitUser = async (valuesForm: any) => {
     const { name, email, password, address, age, gender, role, company } =
       valuesForm;
-    console.log(valuesForm);
     if (dataInit?._id) {
       const user = {
         name,
