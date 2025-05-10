@@ -245,8 +245,8 @@ const UserPage = () => {
   useEffect(() => {
     const query = buildQuery(
       {
-        current: meta.current,
-        pageSize: meta.pageSize,
+        current: 1,
+        pageSize: 5,
       },
       {},
       {}

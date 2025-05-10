@@ -10,6 +10,7 @@ import AdminLayout from "./components/admin/admin.layout";
 import CompanyPage from "./pages/admin/company";
 import UserPage from "./pages/admin/user";
 import PermissionPage from "./pages/admin/permission";
+import RolePage from "./pages/admin/role";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -36,6 +37,7 @@ function App() {
           <Route path="company" element={<CompanyPage />} />
           <Route path="user" element={<UserPage />} />
           <Route path="permission" element={<PermissionPage />} />
+          <Route path="role" element={<RolePage />} />
         </Route>
       </Routes>
     </BrowserRouter>

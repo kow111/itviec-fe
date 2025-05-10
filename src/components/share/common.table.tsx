@@ -7,7 +7,7 @@ interface PaginationProps {
   total: number;
 }
 
-interface CommonTableProps<T> extends TableProps<T> {
+interface CommonTableProps<T> {
   data: T[];
   loading: boolean;
   columns: TableProps<T>["columns"];

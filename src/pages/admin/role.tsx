@@ -1,45 +1,41 @@
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { IPermission } from "../../types/backend";
+import { IRole } from "../../types/backend";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   Button,
   Popconfirm,
   Space,
   TableProps,
+  Tag,
   Typography,
   message,
   notification,
 } from "antd";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
+import { callDeleteRole } from "../../service/role.api";
 import queryString from "query-string";
-import { fetchPermission } from "../../redux/slice/permission.slice";
-// import ViewDetailPermission from "@/components/admin/permission/view.permission";
-// import ModalPermission from "@/components/admin/permission/modal.permission";
-
-import Access from "../../components/share/access";
+import { fetchRole, fetchRoleById } from "../../redux/slice/role.slice";
 import { ALL_PERMISSIONS } from "../../config/permissions";
-import { callDeletePermission } from "../../service/permission.api";
+import Access from "../../components/share/access";
 import CommonTable from "../../components/share/common.table";
-import { colorMethod } from "../../config/utils";
 import DetailDrawer from "../../components/common/view.detail";
-import ModalPermission from "../../components/admin/permission/modal.permission";
 
-const PermissionPage = () => {
+const RolePage = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [dataInit, setDataInit] = useState<IPermission | null>(null);
+  const [dataInit, setDataInit] = useState<IRole | null>(null);
   const [openViewDetail, setOpenViewDetail] = useState<boolean>(false);
 
-  const isFetching = useAppSelector((state) => state.permission.isFetching);
-  const meta = useAppSelector((state) => state.permission.meta);
-  const permissions = useAppSelector((state) => state.permission.result);
+  const isFetching = useAppSelector((state) => state.role.isFetching);
+  const meta = useAppSelector((state) => state.role.meta);
+  const roles = useAppSelector((state) => state.role.result);
   const dispatch = useAppDispatch();
 
-  const handleDeletePermission = async (_id: string | undefined) => {
+  const handleDeleteRole = async (_id: string | undefined) => {
     if (_id) {
-      const res = await callDeletePermission(_id);
+      const res = await callDeleteRole(_id);
       if (res && res.data) {
-        message.success("Xóa Permission thành công");
+        message.success("Xóa Role thành công");
         reloadTable();
       } else {
         notification.error({
@@ -59,7 +55,7 @@ const PermissionPage = () => {
       {},
       {}
     );
-    dispatch(fetchPermission({ query }));
+    dispatch(fetchRole({ query }));
   };
 
   const handleTableChange = (
@@ -82,7 +78,7 @@ const PermissionPage = () => {
       filters
     );
 
-    dispatch(fetchPermission({ query }));
+    dispatch(fetchRole({ query }));
   };
 
   const columnsDetail = [
@@ -95,56 +91,44 @@ const PermissionPage = () => {
       key: "name",
     },
     {
-      label: "API",
-      key: "apiPath",
+      label: "Mô tả",
+      key: "description",
     },
     {
-      label: "Method",
-      key: "method",
-      render(text: any) {
+      label: "Trạng thái",
+      key: "isActive",
+      render: (text: any) => {
         return (
-          <p
-            style={{
-              paddingLeft: 10,
-              fontWeight: "bold",
-              marginBottom: 0,
-              color: colorMethod(text),
-            }}
-          >
-            {text || ""}
-          </p>
+          <Tag color={text ? "lime" : "red"}>
+            {text ? "ACTIVE" : "INACTIVE"}
+          </Tag>
         );
       },
     },
     {
-      label: "Module",
-      key: "module",
-    },
-    {
-      label: "Created At",
+      label: "Ngày tạo",
       key: "createdAt",
-      render: (text: string) => {
+      render: (text: any) => {
         return <span>{dayjs(text).format("DD/MM/YYYY")}</span>;
       },
     },
     {
-      label: "Updated At",
+      label: "Ngày cập nhật",
       key: "updatedAt",
-      render: (text: string) => {
+      render: (text: any) => {
         return <span>{dayjs(text).format("DD/MM/YYYY")}</span>;
       },
     },
   ];
 
-  const columns: TableProps<IPermission>["columns"] = [
+  const columns: TableProps<IRole>["columns"] = [
     {
       title: "Id",
       dataIndex: "_id",
       width: 250,
-      render: (_, record) => {
+      render: (text, record) => {
         return (
           <a
-            href="#"
             onClick={() => {
               setOpenViewDetail(true);
               setDataInit(record);
@@ -161,40 +145,24 @@ const PermissionPage = () => {
       sorter: true,
     },
     {
-      title: "API",
-      dataIndex: "apiPath",
-      sorter: true,
-    },
-    {
-      title: "Method",
-      dataIndex: "method",
-      sorter: true,
-      render(_, entity) {
+      title: "Trạng thái",
+      dataIndex: "isActive",
+      render(dom, entity) {
         return (
-          <p
-            style={{
-              paddingLeft: 10,
-              fontWeight: "bold",
-              marginBottom: 0,
-              color: colorMethod(entity?.method as string),
-            }}
-          >
-            {entity?.method || ""}
-          </p>
+          <>
+            <Tag color={entity.isActive ? "lime" : "red"}>
+              {entity.isActive ? "ACTIVE" : "INACTIVE"}
+            </Tag>
+          </>
         );
       },
-    },
-    {
-      title: "Module",
-      dataIndex: "module",
-      sorter: true,
     },
     {
       title: "Actions",
       width: 50,
       render: (_value, entity) => (
         <Space>
-          <Access permission={ALL_PERMISSIONS.PERMISSIONS.UPDATE} hideChildren>
+          <Access permission={ALL_PERMISSIONS.ROLES.UPDATE} hideChildren>
             <EditOutlined
               style={{
                 fontSize: 20,
@@ -202,17 +170,17 @@ const PermissionPage = () => {
               }}
               type=""
               onClick={() => {
+                dispatch(fetchRoleById(entity._id as string));
                 setOpenModal(true);
-                setDataInit(entity);
               }}
             />
           </Access>
-          <Access permission={ALL_PERMISSIONS.PERMISSIONS.DELETE} hideChildren>
+          <Access permission={ALL_PERMISSIONS.ROLES.DELETE} hideChildren>
             <Popconfirm
               placement="leftTop"
-              title={"Xác nhận xóa permission"}
-              description={"Bạn có chắc chắn muốn xóa permission này ?"}
-              onConfirm={() => handleDeletePermission(entity._id)}
+              title={"Xác nhận xóa role"}
+              description={"Bạn có chắc chắn muốn xóa role này ?"}
+              onConfirm={() => handleDeleteRole(entity._id)}
               okText="Xác nhận"
               cancelText="Hủy"
             >
@@ -234,24 +202,12 @@ const PermissionPage = () => {
   const buildQuery = (params: any, sort: any, filter: any) => {
     const clone = { ...params };
     if (clone.name) clone.name = `/${clone.name}/i`;
-    if (clone.apiPath) clone.apiPath = `/${clone.apiPath}/i`;
-    if (clone.method) clone.method = `/${clone.method}/i`;
-    if (clone.module) clone.module = `/${clone.module}/i`;
 
     let temp = queryString.stringify(clone);
 
     let sortBy = "";
     if (sort && sort.name) {
       sortBy = sort.name === "ascend" ? "sort=name" : "sort=-name";
-    }
-    if (sort && sort.apiPath) {
-      sortBy = sort.apiPath === "ascend" ? "sort=apiPath" : "sort=-apiPath";
-    }
-    if (sort && sort.method) {
-      sortBy = sort.method === "ascend" ? "sort=method" : "sort=-method";
-    }
-    if (sort && sort.module) {
-      sortBy = sort.module === "ascend" ? "sort=module" : "sort=-module";
     }
     if (sort && sort.createdAt) {
       sortBy =
@@ -281,14 +237,14 @@ const PermissionPage = () => {
       {},
       {}
     );
-    dispatch(fetchPermission({ query }));
+    dispatch(fetchRole({ query }));
   }, []);
 
   return (
     <div>
-      <Access permission={ALL_PERMISSIONS.PERMISSIONS.GET_PAGINATE}>
-        <Typography.Title level={3}>Danh sách quyền hạn</Typography.Title>
-        <Access permission={ALL_PERMISSIONS.PERMISSIONS.CREATE} hideChildren>
+      <Access permission={ALL_PERMISSIONS.ROLES.GET_PAGINATE}>
+        <Typography.Title level={3}>Danh sách vai trò</Typography.Title>
+        <Access permission={ALL_PERMISSIONS.ROLES.CREATE} hideChildren>
           <Button
             icon={<PlusOutlined />}
             type="primary"
@@ -298,10 +254,10 @@ const PermissionPage = () => {
             Thêm mới
           </Button>
         </Access>
-        <CommonTable<IPermission>
+        <CommonTable<IRole>
           loading={isFetching}
           columns={columns}
-          data={permissions}
+          data={roles}
           handleTableChange={handleTableChange}
           pagination={{
             current: meta.current,
@@ -310,17 +266,14 @@ const PermissionPage = () => {
           }}
         />
       </Access>
-      <ModalPermission
-        openModal={openModal}
-        setOpenModal={setOpenModal}
-        reloadTable={reloadTable}
-        dataInit={dataInit}
-        setDataInit={setDataInit}
-      />
-
+      {/* <ModalRole
+                openModal={openModal}
+                setOpenModal={setOpenModal}
+                reloadTable={reloadTable}
+            /> */}
       <DetailDrawer
         open={openViewDetail}
-        title="Chi tiết quyền hạn"
+        title="Chi tiết vai trò"
         columns={columnsDetail}
         data={dataInit}
         onClose={() => {
@@ -333,4 +286,4 @@ const PermissionPage = () => {
   );
 };
 
-export default PermissionPage;
+export default RolePage;
