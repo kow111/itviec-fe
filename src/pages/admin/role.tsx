@@ -20,6 +20,7 @@ import { ALL_PERMISSIONS } from "../../config/permissions";
 import Access from "../../components/share/access";
 import CommonTable from "../../components/share/common.table";
 import DetailDrawer from "../../components/common/view.detail";
+import ModalRole from "../../components/admin/role/modal.role";
 
 const RolePage = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -266,11 +267,11 @@ const RolePage = () => {
           }}
         />
       </Access>
-      {/* <ModalRole
-                openModal={openModal}
-                setOpenModal={setOpenModal}
-                reloadTable={reloadTable}
-            /> */}
+      <ModalRole
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        reloadTable={reloadTable}
+      />
       <DetailDrawer
         open={openViewDetail}
         title="Chi tiết vai trò"
