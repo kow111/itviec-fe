@@ -21,6 +21,14 @@ export const LOCATION_LIST = [
   { label: "Tất cả thành phố", value: "ALL" },
 ];
 
+export const LEVEL_LIST = [
+  { label: "Intern", value: "INTERN" },
+  { label: "Fresher", value: "FRESHER" },
+  { label: "Junior", value: "JUNIOR" },
+  { label: "Middle", value: "MIDDLE" },
+  { label: "Senior", value: "SENIOR" },
+];
+
 export function colorMethod(
   method: "POST" | "PUT" | "GET" | "DELETE" | string
 ) {

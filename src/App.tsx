@@ -11,6 +11,7 @@ import CompanyPage from "./pages/admin/company";
 import UserPage from "./pages/admin/user";
 import PermissionPage from "./pages/admin/permission";
 import RolePage from "./pages/admin/role";
+import JobPage from "./pages/admin/job";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -38,6 +39,7 @@ function App() {
           <Route path="user" element={<UserPage />} />
           <Route path="permission" element={<PermissionPage />} />
           <Route path="role" element={<RolePage />} />
+          <Route path="job" element={<JobPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

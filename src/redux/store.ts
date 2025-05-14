@@ -4,6 +4,7 @@ import companyReducer from "./slice/company.slice";
 import userReducer from "./slice/user.slice";
 import permissionReducer from "./slice/permission.slice";
 import roleReducer from "./slice/role.slice";
+import jobReducer from "./slice/job.slice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     user: userReducer,
     permission: permissionReducer,
     role: roleReducer,
+    job: jobReducer,
   },
 });
 
