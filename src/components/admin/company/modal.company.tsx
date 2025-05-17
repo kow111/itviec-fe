@@ -262,18 +262,12 @@ const ModalCompany = (props: IProps) => {
                   onChange={handleChange}
                   onRemove={handleRemoveFile}
                   onPreview={handlePreview}
-                  defaultFileList={
-                    dataInit?._id
-                      ? [
-                          {
-                            uid: uuidv4(),
-                            name: dataInit?.logo ?? "",
-                            status: "done",
-                            url: dataInit?.logo,
-                          },
-                        ]
-                      : []
-                  }
+                  fileList={dataLogo.map((item) => ({
+                    uid: item.uid,
+                    name: item.name,
+                    status: "done",
+                    url: item.name,
+                  }))}
                 >
                   <div>
                     {loadingUpload ? <LoadingOutlined /> : <PlusOutlined />}

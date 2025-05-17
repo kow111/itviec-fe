@@ -169,3 +169,9 @@ export interface ISubscribers {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface IDetailRecord {
+  label: string;
+  key: any;
+  render?: (text: any) => JSX.Element;
+}
