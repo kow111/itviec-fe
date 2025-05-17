@@ -45,3 +45,9 @@ export function colorMethod(
       return grey[10];
   }
 }
+
+export const getLocationName = (value: string) => {
+  const locationFilter = LOCATION_LIST.filter((item) => item.value === value);
+  if (locationFilter.length) return locationFilter[0].label;
+  return "unknown";
+};

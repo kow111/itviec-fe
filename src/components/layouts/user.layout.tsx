@@ -16,7 +16,7 @@ const UserLayout = () => {
   return (
     <div>
       <UserHeader />
-      <div>
+      <div className="container mx-auto">
         <Outlet />
       </div>
       <UserFooter />

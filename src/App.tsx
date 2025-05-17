@@ -13,6 +13,9 @@ import PermissionPage from "./pages/admin/permission";
 import RolePage from "./pages/admin/role";
 import JobPage from "./pages/admin/job";
 import ResumePage from "./pages/admin/resume";
+import ClientCompanyDetailPage from "./pages/company/detail";
+import ClientCompanyPage from "./pages/company";
+import ClientJobPage from "./pages/job";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -33,6 +36,9 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<UserLayout />}>
           <Route index element={<HomePage />} />
+          <Route path="company" element={<ClientCompanyPage />} />
+          <Route path="company/:id" element={<ClientCompanyDetailPage />} />
+          <Route path="job" element={<ClientJobPage />} />
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<>Hello</>} />

@@ -99,7 +99,16 @@ const UserHeader = () => {
   const itemsMobiles = [...items, ...itemsDropdown];
 
   return (
-    <Header style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+    <Header
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "10px",
+        position: "sticky",
+        top: 0,
+        zIndex: 1000,
+      }}
+    >
       <div className="text-3xl text-blue-500 font-bold cursor-pointer">
         <FaReact onClick={() => navigate("/")} title="Hỏi Dân IT" />
       </div>
