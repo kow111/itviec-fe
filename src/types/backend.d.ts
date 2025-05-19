@@ -82,6 +82,7 @@ export interface IJob {
     _id: string;
     name: string;
     logo?: string;
+    description?: string;
   };
   location: string;
   salary: number;

@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { callLogout } from "../../service/auth.api";
 import { setLogoutAction } from "../../redux/slice/account.slice";
 import { Header } from "antd/es/layout/layout";
+import ManageAccount from "./modal/manage.account";
 // import ManageAccount from './modal/manage.account';
 
 const UserHeader = () => {
@@ -96,8 +97,6 @@ const UserHeader = () => {
     },
   ];
 
-  const itemsMobiles = [...items, ...itemsDropdown];
-
   return (
     <Header
       style={{
@@ -109,8 +108,13 @@ const UserHeader = () => {
         zIndex: 1000,
       }}
     >
-      <div className="text-3xl text-blue-500 font-bold cursor-pointer">
-        <FaReact onClick={() => navigate("/")} title="Hỏi Dân IT" />
+      <div className="text-3xl text-blue-500 font-bold cursor-pointer me-4">
+        <h1
+          className="text-2xl font-bold text-white mb-2"
+          onClick={() => navigate("/")}
+        >
+          JobFinder<span className="text-blue-500">.pro</span>
+        </h1>
       </div>
       <div className="flex items-center justify-between w-full">
         <Menu
@@ -134,7 +138,7 @@ const UserHeader = () => {
           )}
         </div>
       </div>
-      {/* <ManageAccount open={openMangeAccount} setOpen={setOpenManageAccount} /> */}
+      <ManageAccount open={openMangeAccount} onClose={setOpenManageAccount} />
     </Header>
   );
 };

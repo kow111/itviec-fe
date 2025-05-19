@@ -4,7 +4,7 @@ import { IJob } from "../../../types/backend";
 import { EnvironmentOutlined, ThunderboltOutlined } from "@ant-design/icons";
 import { Avatar, Card, Col, Empty, Pagination, Row, Spin } from "antd";
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
@@ -83,10 +83,9 @@ const JobCard = (props: IProps) => {
             return (
               <Col span={24} md={12} key={item._id}>
                 <Card
-                  hoverable
                   size="small"
                   onClick={() => handleViewDetailJob(item)}
-                  className="rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                  className="rounded-xl shadow-md hover:shadow-lg transition-shadow cursor-pointer"
                 >
                   <div className="flex gap-4 items-start">
                     <Avatar
@@ -132,7 +131,7 @@ const JobCard = (props: IProps) => {
           )}
         </Row>
 
-        {showPagination && (
+        {showPagination ? (
           <div className="mt-10 flex justify-center">
             <Pagination
               current={current}
@@ -143,6 +142,19 @@ const JobCard = (props: IProps) => {
                 handleOnchangePage({ current: p, pageSize: s })
               }
             />
+          </div>
+        ) : (
+          <div className="mt-10 flex justify-center">
+            <div
+              onClick={() => {
+                navigate("/job");
+              }}
+              className="bg-white text-blue border border-blue-200 rounded-lg px-4 py-2 hover:bg-blue-50 cursor-pointer transition duration-200 ease-in-out"
+            >
+              <span className="text-blue-500 font-semibold text-lg px-4">
+                Xem hơn {total} công việc đang chờ bạn &#62;
+              </span>
+            </div>
           </div>
         )}
       </Spin>

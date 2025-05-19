@@ -147,6 +147,22 @@ const ResumePage = () => {
       },
     },
     {
+      label: "Url CV",
+      key: "url",
+      render: (text) => {
+        return (
+          <a
+            href={text}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "blue" }}
+          >
+            {text}
+          </a>
+        );
+      },
+    },
+    {
       label: "Job",
       key: "jobId",
       render: (text) => {

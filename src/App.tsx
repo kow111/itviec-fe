@@ -16,6 +16,8 @@ import ResumePage from "./pages/admin/resume";
 import ClientCompanyDetailPage from "./pages/company/detail";
 import ClientCompanyPage from "./pages/company";
 import ClientJobPage from "./pages/job";
+import ClientJobDetailPage from "./pages/job/detail";
+import ScrollToTop from "./config/scroll.top";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -27,10 +29,12 @@ function App() {
     )
       return;
     dispatch(fetchAccount());
+    window.scrollTo(0, 0);
   }, []);
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -39,6 +43,7 @@ function App() {
           <Route path="company" element={<ClientCompanyPage />} />
           <Route path="company/:id" element={<ClientCompanyDetailPage />} />
           <Route path="job" element={<ClientJobPage />} />
+          <Route path="job/:id" element={<ClientJobDetailPage />} />
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<>Hello</>} />

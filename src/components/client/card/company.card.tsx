@@ -71,7 +71,7 @@ const CompanyCard = (props: IProps) => {
           {displayCompany?.map((item) => (
             <Col key={item._id} span={24} sm={12} md={8}>
               <div
-                className="h-[300px] flex flex-col transition-shadow shadow-sm hover:shadow-lg rounded-xl cursor-pointer"
+                className="h-[300px] flex flex-col transition-shadow shadow-md hover:shadow-lg rounded-xl cursor-pointer bg-white border border-gray-200"
                 onClick={() => handleViewDetailJob(item)}
               >
                 <img

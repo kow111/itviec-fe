@@ -14,9 +14,9 @@ const UserLayout = () => {
   // }, [location]);
 
   return (
-    <div>
+    <div className="min-h-screen">
       <UserHeader />
-      <div className="container mx-auto">
+      <div className="container mx-auto ">
         <Outlet />
       </div>
       <UserFooter />
