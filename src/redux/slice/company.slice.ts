@@ -35,20 +35,14 @@ const initialState: IState = {
 export const companySlide = createSlice({
   name: "company",
   initialState,
-  // The `reducers` field lets us define reducers and generate associated actions
-  reducers: {
-    // Use the PayloadAction type to declare the contents of `action.payload`
-    setActiveMenu: (state, action) => {
-      // state.activeMenu = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
-    builder.addCase(fetchCompany.pending, (state, action) => {
+    builder.addCase(fetchCompany.pending, (state, _) => {
       state.isFetching = true;
     });
 
-    builder.addCase(fetchCompany.rejected, (state, action) => {
+    builder.addCase(fetchCompany.rejected, (state, _) => {
       state.isFetching = false;
     });
 
@@ -62,6 +56,6 @@ export const companySlide = createSlice({
   },
 });
 
-export const { setActiveMenu } = companySlide.actions;
+export const {} = companySlide.actions;
 
 export default companySlide.reducer;

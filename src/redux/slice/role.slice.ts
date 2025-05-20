@@ -55,7 +55,7 @@ export const roleSlide = createSlice({
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
-    resetSingleRole: (state, action) => {
+    resetSingleRole: (state, _) => {
       state.singleRole = {
         _id: "",
         name: "",
@@ -67,13 +67,13 @@ export const roleSlide = createSlice({
   },
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
-    builder.addCase(fetchRole.pending, (state, action) => {
+    builder.addCase(fetchRole.pending, (state, _) => {
       state.isFetching = true;
       // Add user to the state array
       // state.courseOrder = action.payload;
     });
 
-    builder.addCase(fetchRole.rejected, (state, action) => {
+    builder.addCase(fetchRole.rejected, (state, _) => {
       state.isFetching = false;
       // Add user to the state array
       // state.courseOrder = action.payload;
@@ -90,7 +90,7 @@ export const roleSlide = createSlice({
       // state.courseOrder = action.payload;
     });
 
-    builder.addCase(fetchRoleById.pending, (state, action) => {
+    builder.addCase(fetchRoleById.pending, (state, _) => {
       state.isFetchSingle = true;
       state.singleRole = {
         _id: "",
@@ -101,7 +101,7 @@ export const roleSlide = createSlice({
       };
     });
 
-    builder.addCase(fetchRoleById.rejected, (state, action) => {
+    builder.addCase(fetchRoleById.rejected, (state, _) => {
       state.isFetchSingle = false;
       state.singleRole = {
         _id: "",

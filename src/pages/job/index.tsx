@@ -3,7 +3,7 @@ import { Col, Divider, Row } from "antd";
 import JobCard from "../../components/client/card/job.card";
 import { useLocation } from "react-router";
 
-const ClientJobPage = (props: any) => {
+const ClientJobPage = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 

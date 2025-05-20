@@ -11,7 +11,7 @@ import {
   message,
   notification,
 } from "antd";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { callDeleteUser } from "../../service/user.api";
 import queryString from "query-string";
@@ -116,7 +116,7 @@ const UserPage = () => {
       title: "Id",
       dataIndex: "_id",
       width: 250,
-      render: (text, record) => {
+      render: (_, record) => {
         return (
           <a
             href="#"
@@ -184,7 +184,7 @@ const UserPage = () => {
     },
   ];
 
-  const buildQuery = (params: any, sort: any, filter: any) => {
+  const buildQuery = (params: any, sort: any, _: any) => {
     const clone = { ...params };
     if (clone.name) clone.name = `/${clone.name}/i`;
     if (clone.email) clone.email = `/${clone.email}/i`;

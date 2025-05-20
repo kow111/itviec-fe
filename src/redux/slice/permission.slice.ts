@@ -39,13 +39,13 @@ export const permissionSlide = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
-    builder.addCase(fetchPermission.pending, (state, action) => {
+    builder.addCase(fetchPermission.pending, (state, _) => {
       state.isFetching = true;
       // Add user to the state array
       // state.courseOrder = action.payload;
     });
 
-    builder.addCase(fetchPermission.rejected, (state, action) => {
+    builder.addCase(fetchPermission.rejected, (state, _) => {
       state.isFetching = false;
       // Add user to the state array
       // state.courseOrder = action.payload;

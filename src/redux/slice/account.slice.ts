@@ -72,7 +72,7 @@ export const accountSlide = createSlice({
       state.user.permissions = action?.payload?.permissions;
       console.log("state.user", state);
     },
-    setLogoutAction: (state, action) => {
+    setLogoutAction: (state, _) => {
       localStorage.removeItem("access_token");
       state.isAuthenticated = false;
       state.user = {

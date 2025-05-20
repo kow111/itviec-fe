@@ -18,7 +18,7 @@ import { useAppSelector } from "../../redux/hooks";
 import JobCard from "../../components/client/card/job.card";
 dayjs.extend(relativeTime);
 
-const ClientJobDetailPage = (props: any) => {
+const ClientJobDetailPage = () => {
   const navigate = useNavigate();
   const [jobDetail, setJobDetail] = useState<IJob | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);

@@ -1,15 +1,4 @@
-import {
-  Button,
-  Col,
-  Form,
-  Modal,
-  Row,
-  Select,
-  Table,
-  Tabs,
-  message,
-  notification,
-} from "antd";
+import { Modal, Table, Tabs } from "antd";
 
 import type { TabsProps } from "antd";
 import { IResume } from "../../../types/backend";
@@ -21,9 +10,6 @@ import { useState, useEffect } from "react";
 // } from "@/config/api";
 import type { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
-import { MonitorOutlined } from "@ant-design/icons";
-import { SKILLS_LIST } from "../../../config/utils";
-import { useAppSelector } from "../../../redux/hooks";
 import { callFetchResumeByUser } from "../../../service/resume.api";
 
 interface IProps {
@@ -31,7 +17,7 @@ interface IProps {
   onClose: (v: boolean) => void;
 }
 
-const UserResume = (props: any) => {
+const UserResume = () => {
   const [listCV, setListCV] = useState<IResume[]>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
@@ -53,7 +39,7 @@ const UserResume = (props: any) => {
       key: "index",
       width: 50,
       align: "center",
-      render: (text, record, index) => {
+      render: (_, __, index) => {
         return <>{index + 1}</>;
       },
     },
@@ -72,14 +58,14 @@ const UserResume = (props: any) => {
     {
       title: "Ngày rải CV",
       dataIndex: "createdAt",
-      render(value, record, index) {
+      render(_, record) {
         return <>{dayjs(record.createdAt).format("DD-MM-YYYY HH:mm:ss")}</>;
       },
     },
     {
       title: "",
       dataIndex: "",
-      render(value, record, index) {
+      render(_, record) {
         return (
           <a href={record?.url} target="_blank">
             Chi tiết
@@ -101,7 +87,7 @@ const UserResume = (props: any) => {
   );
 };
 
-const UserUpdateInfo = (props: any) => {
+const UserUpdateInfo = () => {
   return <div>//todo</div>;
 };
 
@@ -175,7 +161,7 @@ const UserUpdateInfo = (props: any) => {
 const ManageAccount = (props: IProps) => {
   const { open, onClose } = props;
 
-  const onChange = (key: string) => {
+  const onChange = () => {
     // console.log(key);
   };
 

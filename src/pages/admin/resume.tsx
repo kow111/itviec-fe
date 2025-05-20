@@ -4,7 +4,7 @@ import { App, Avatar, Select, TableProps, Typography } from "antd";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import {
-  callDeleteResume,
+  // callDeleteResume,
   callUpdateResumeStatus,
 } from "../../service/resume.api";
 import queryString from "query-string";
@@ -68,7 +68,7 @@ const ResumePage = () => {
     dispatch(fetchResume({ query }));
   };
 
-  const buildQuery = (params: any, sort: any, filter: any) => {
+  const buildQuery = (params: any, sort: any, _: any) => {
     const clone = { ...params };
     // if (clone.name) clone.name = `/${clone.name}/i`;
     // if (clone.salary) clone.salary = `/${clone.salary}/i`;
@@ -104,20 +104,20 @@ const ResumePage = () => {
     return temp;
   };
 
-  const handleDeleteResume = async (_id: string | undefined) => {
-    if (_id) {
-      const res = await callDeleteResume(_id);
-      if (res && res.data) {
-        message.success("Xóa Resume thành công");
-        reloadTable();
-      } else {
-        notification.error({
-          message: "Có lỗi xảy ra",
-          description: res.message,
-        });
-      }
-    }
-  };
+  // const handleDeleteResume = async (_id: string | undefined) => {
+  //   if (_id) {
+  //     const res = await callDeleteResume(_id);
+  //     if (res && res.data) {
+  //       message.success("Xóa Resume thành công");
+  //       reloadTable();
+  //     } else {
+  //       notification.error({
+  //         message: "Có lỗi xảy ra",
+  //         description: res.message,
+  //       });
+  //     }
+  //   }
+  // };
 
   const columnsDetail: IDetailRecord[] = [
     {

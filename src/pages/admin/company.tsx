@@ -145,7 +145,7 @@ const CompanyPage = () => {
     },
   ];
 
-  const buildQuery = (params: any, sort: any, filter: any) => {
+  const buildQuery = (params: any, sort: any, _: any) => {
     const clone = { ...params };
     if (clone.name) clone.name = `/${clone.name}/i`;
     if (clone.address) clone.address = `/${clone.address}/i`;

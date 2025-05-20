@@ -6,7 +6,6 @@ import {
   ConfigProvider,
   Divider,
   Form,
-  Image,
   Input,
   Modal,
   Row,
@@ -70,7 +69,7 @@ const ApplyModal = (props: IProps) => {
   const propsUpload: UploadProps = {
     maxCount: 1,
     multiple: false,
-    onRemove(file) {
+    onRemove() {
       setUrlCV("");
     },
     accept: "application/pdf,application/msword, .doc, .docx, .pdf",

@@ -37,11 +37,11 @@ export const resumeSlide = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchResume.pending, (state, action) => {
+    builder.addCase(fetchResume.pending, (state, _) => {
       state.isFetching = true;
     });
 
-    builder.addCase(fetchResume.rejected, (state, action) => {
+    builder.addCase(fetchResume.rejected, (state, _) => {
       state.isFetching = false;
     });
 

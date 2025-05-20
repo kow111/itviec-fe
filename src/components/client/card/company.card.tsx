@@ -17,18 +17,16 @@ const CompanyCard = (props: IProps) => {
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(9);
   const [total, setTotal] = useState(0);
-  const [filter, setFilter] = useState("");
-  const [sortQuery, setSortQuery] = useState("sort=-updatedAt");
+  const sortQuery = "sort=-updatedAt";
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchCompany();
-  }, [current, pageSize, filter, sortQuery]);
+  }, [current, pageSize, sortQuery]);
 
   const fetchCompany = async () => {
     setIsLoading(true);
     let query = `current=${current}&pageSize=${pageSize}`;
-    if (filter) query += `&${filter}`;
     if (sortQuery) query += `&${sortQuery}`;
 
     const res = await callFetchCompany(query);

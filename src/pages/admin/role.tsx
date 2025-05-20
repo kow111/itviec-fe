@@ -127,7 +127,7 @@ const RolePage = () => {
       title: "Id",
       dataIndex: "_id",
       width: 250,
-      render: (text, record) => {
+      render: (_, record) => {
         return (
           <a
             onClick={() => {
@@ -148,7 +148,7 @@ const RolePage = () => {
     {
       title: "Trạng thái",
       dataIndex: "isActive",
-      render(dom, entity) {
+      render(_, entity) {
         return (
           <>
             <Tag color={entity.isActive ? "lime" : "red"}>
@@ -200,7 +200,7 @@ const RolePage = () => {
     },
   ];
 
-  const buildQuery = (params: any, sort: any, filter: any) => {
+  const buildQuery = (params: any, sort: any, _: any) => {
     const clone = { ...params };
     if (clone.name) clone.name = `/${clone.name}/i`;
 
