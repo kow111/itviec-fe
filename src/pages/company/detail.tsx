@@ -5,6 +5,7 @@ import { callFetchCompanyById } from "../../service/company.api";
 import parse from "html-react-parser";
 import { Avatar, Col, Divider, Row, Skeleton, Typography } from "antd";
 import { EnvironmentOutlined } from "@ant-design/icons";
+import JobCard from "../../components/client/card/job.card";
 
 const ClientCompanyDetailPage = () => {
   const [companyDetail, setCompanyDetail] = useState<ICompany | null>(null);
@@ -30,43 +31,46 @@ const ClientCompanyDetailPage = () => {
       {isLoading ? (
         <Skeleton active />
       ) : (
-        <Row gutter={[32, 32]}>
+        <Row gutter={[20, 20]}>
           {companyDetail && companyDetail._id && (
             <>
-              {/* LEFT SIDE */}
-              <Col
-                span={24}
-                md={16}
-                className="border-r-1 border-gray-200 pr-4"
-              >
-                <Typography.Title level={2}>
-                  {companyDetail.name}
-                </Typography.Title>
+              <Col span={24} md={16}>
+                <div className="bg-white p-5 rounded-lg shadow-lg border border-gray-200">
+                  <Typography.Title level={2}>
+                    {companyDetail.name}
+                  </Typography.Title>
 
-                <div className="flex items-center text-gray-600 mb-4">
-                  <EnvironmentOutlined className="text-teal-500 mr-2" />
-                  <span>{companyDetail?.address}</span>
-                </div>
+                  <div className="flex items-center text-gray-600 mb-4">
+                    <EnvironmentOutlined className="text-teal-500 mr-2" />
+                    <span>{companyDetail?.address}</span>
+                  </div>
 
-                <Divider />
+                  <Divider />
 
-                <div className="">
-                  {parse(companyDetail?.description ?? "")}
+                  <div className="">
+                    {parse(companyDetail?.description ?? "")}
+                  </div>
                 </div>
               </Col>
 
-              {/* RIGHT SIDE */}
               <Col span={24} md={8}>
-                <div className="flex flex-col items-center ">
-                  <Avatar
-                    src={companyDetail?.logo}
-                    size={200}
-                    className="mb-4"
-                    shape="square"
+                <div className="bg-white rounded-lg shadow-lg border border-gray-200">
+                  <div className="flex flex-col items-center ">
+                    <Avatar
+                      src={companyDetail?.logo}
+                      size={200}
+                      className="mb-4"
+                      shape="square"
+                    />
+                    <h2 className="text-lg font-semibold text-gray-800">
+                      {companyDetail?.name}
+                    </h2>
+                  </div>
+                  <JobCard
+                    company={companyDetail._id}
+                    showPagination={false}
+                    type="company"
                   />
-                  <h2 className="text-lg font-semibold text-gray-800">
-                    {companyDetail?.name}
-                  </h2>
                 </div>
               </Col>
             </>

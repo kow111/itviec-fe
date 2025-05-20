@@ -9,7 +9,6 @@ import {
 } from "@ant-design/icons";
 import { App, Avatar, Dropdown, MenuProps, Space } from "antd";
 import { Menu } from "antd";
-import { FaReact } from "react-icons/fa";
 import { useLocation, useNavigate, Link } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { callLogout } from "../../service/auth.api";

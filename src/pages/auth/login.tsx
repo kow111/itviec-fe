@@ -32,6 +32,8 @@ const LoginPage = () => {
     }
   }, []);
 
+  console.log("callback", callback);
+
   const onFinish = async (values: any) => {
     const { username, password } = values;
     setIsSubmit(true);
@@ -42,7 +44,7 @@ const LoginPage = () => {
       dispatch(setUserLoginInfo(res.data.user));
       message.success("Đăng nhập tài khoản thành công!");
       if (callback) {
-        navigate(callback);
+        window.location.href = callback;
       } else {
         navigate("/");
       }

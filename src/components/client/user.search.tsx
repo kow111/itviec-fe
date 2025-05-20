@@ -1,13 +1,26 @@
 import { Button, Col, Form, Row, Select } from "antd";
 import { EnvironmentOutlined, MonitorOutlined } from "@ant-design/icons";
 import { LOCATION_LIST, SKILLS_LIST } from "../../config/utils";
+import { useNavigate } from "react-router";
 
 const SearchClient = () => {
+  const navigate = useNavigate();
   const optionsSkills = SKILLS_LIST;
   const optionsLocations = LOCATION_LIST;
   const [form] = Form.useForm();
 
-  const onFinish = async (values: any) => {};
+  const onFinish = async (values: any) => {
+    const { skills, location } = values;
+    const queryParams = new URLSearchParams();
+    if (skills) {
+      queryParams.append("skills", skills.join(","));
+    }
+    if (location) {
+      queryParams.append("location", location.join(","));
+    }
+    const queryString = queryParams.toString();
+    navigate(`/job?${queryString}`);
+  };
 
   return (
     <Form form={form} onFinish={onFinish}>

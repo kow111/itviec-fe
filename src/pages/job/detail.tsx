@@ -14,6 +14,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 // import ApplyModal from "@/components/client/modal/apply.modal";
 import { useNavigate, useParams } from "react-router";
 import ApplyModal from "../../components/client/modal/apply.modal";
+import { useAppSelector } from "../../redux/hooks";
 dayjs.extend(relativeTime);
 
 const ClientJobDetailPage = (props: any) => {
@@ -22,6 +23,10 @@ const ClientJobDetailPage = (props: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const isAuthenticated = useAppSelector(
+    (state) => state.account.isAuthenticated
+  );
 
   const { id } = useParams();
 
@@ -61,14 +66,36 @@ const ClientJobDetailPage = (props: any) => {
                       {jobDetail.name}
                     </div>
 
-                    <div className="text-gray-700 mb-4 text-lg">
+                    <div className="text-gray-800 mb-4 text-lg">
                       {jobDetail?.company?.name}
                     </div>
-
+                    <div className="mb-2 text-blue-700 text-xl flex items-center">
+                      <DollarOutlined className="text-green-500" />
+                      {isAuthenticated ? (
+                        <>
+                          <span className="ml-2 font-medium">
+                            {(jobDetail.salary + "").replace(
+                              /\B(?=(\d{3})+(?!\d))/g,
+                              ","
+                            )}{" "}
+                            đ
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          <span
+                            className="ml-2 font-medium cursor-pointer underline"
+                            onClick={() => navigate("/login")}
+                          >
+                            Sign in to view salary
+                          </span>
+                        </>
+                      )}
+                    </div>
                     <div className="mb-4">
                       <button
                         onClick={() => setIsModalOpen(true)}
-                        className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded shadow w-full cursor-pointer transition duration-200 ease-in-out"
+                        className="text-md bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded shadow w-full cursor-pointer transition duration-200 ease-in-out"
                       >
                         Apply Now
                       </button>
@@ -84,17 +111,6 @@ const ClientJobDetailPage = (props: any) => {
                         {item}
                       </Tag>
                     ))}
-                  </div>
-
-                  <div className="mb-2 text-gray-700 flex items-center">
-                    <DollarOutlined className="text-green-500" />
-                    <span className="ml-2 font-medium">
-                      {(jobDetail.salary + "").replace(
-                        /\B(?=(\d{3})+(?!\d))/g,
-                        ","
-                      )}{" "}
-                      đ
-                    </span>
                   </div>
 
                   <div className="mb-2 text-gray-700 flex items-center">

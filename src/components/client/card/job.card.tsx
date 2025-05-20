@@ -1,5 +1,5 @@
 import { callFetchJob } from "../../../service/job.api";
-import { LOCATION_LIST, getLocationName } from "../../../config/utils";
+import { getLocationName } from "../../../config/utils";
 import { IJob } from "../../../types/backend";
 import { EnvironmentOutlined, ThunderboltOutlined } from "@ant-design/icons";
 import { Avatar, Card, Col, Empty, Pagination, Row, Spin } from "antd";
@@ -11,34 +11,44 @@ dayjs.extend(relativeTime);
 
 interface IProps {
   showPagination?: boolean;
+  company?: string;
+  location?: string | null;
+  keyword?: string | null;
+  type?: "company" | "job";
 }
 
 const JobCard = (props: IProps) => {
-  const { showPagination = false } = props;
+  const { showPagination = false, type = "job" } = props;
 
   const [displayJob, setDisplayJob] = useState<IJob[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [current, setCurrent] = useState(1);
-  const [pageSize, setPageSize] = useState(8);
+  const [pageSize, setPageSize] = useState(type === "company" ? 100 : 8);
   const [total, setTotal] = useState(0);
-  const [filter, setFilter] = useState("");
-  const [sortQuery, setSortQuery] = useState("sort=-updatedAt");
+  const sortQuery = "sort=-updatedAt&&isActive=true";
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchJob();
-  }, [current, pageSize, filter, sortQuery]);
+  }, [
+    current,
+    pageSize,
+    props.company,
+    props.location,
+    props.keyword,
+    sortQuery,
+  ]);
 
   const fetchJob = async () => {
     setIsLoading(true);
     let query = `current=${current}&pageSize=${pageSize}`;
-    if (filter) {
-      query += `&${filter}`;
-    }
     if (sortQuery) {
       query += `&${sortQuery}`;
     }
+    if (props.company) query += `&company=${props.company}`;
+    if (props.location) query += `&location=${props.location}`;
+    if (props.keyword) query += `&skills=${props.keyword}`;
 
     const res = await callFetchJob(query);
     if (res && res.data) {
@@ -73,7 +83,9 @@ const JobCard = (props: IProps) => {
             <Col span={24}>
               <div className="mb-6 text-center">
                 <h2 className="text-4xl font-bold text-black">
-                  Công Việc Mới Nhất
+                  {type === "company"
+                    ? "Công việc đang tuyển"
+                    : "Công Việc Mới Nhất"}
                 </h2>
               </div>
             </Col>
@@ -81,7 +93,7 @@ const JobCard = (props: IProps) => {
 
           {displayJob?.map((item) => {
             return (
-              <Col span={24} md={12} key={item._id}>
+              <Col span={24} md={type === "company" ? 24 : 12} key={item._id}>
                 <Card
                   size="small"
                   onClick={() => handleViewDetailJob(item)}
@@ -143,6 +155,8 @@ const JobCard = (props: IProps) => {
               }
             />
           </div>
+        ) : type === "company" ? (
+          <></>
         ) : (
           <div className="mt-10 flex justify-center">
             <div
