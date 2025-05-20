@@ -12,8 +12,8 @@ dayjs.extend(relativeTime);
 interface IProps {
   showPagination?: boolean;
   company?: string;
-  location?: string | null;
-  keyword?: string | null;
+  location?: string | string[] | null;
+  keyword?: string | string[] | null;
   type?: "company" | "job";
 }
 
@@ -43,9 +43,7 @@ const JobCard = (props: IProps) => {
   const fetchJob = async () => {
     setIsLoading(true);
     let query = `current=${current}&pageSize=${pageSize}`;
-    if (sortQuery) {
-      query += `&${sortQuery}`;
-    }
+    query += `&${sortQuery}`;
     if (props.company) query += `&company=${props.company}`;
     if (props.location) query += `&location=${props.location}`;
     if (props.keyword) query += `&skills=${props.keyword}`;
@@ -84,7 +82,7 @@ const JobCard = (props: IProps) => {
               <div className="mb-6 text-center">
                 <h2 className="text-4xl font-bold text-black">
                   {type === "company"
-                    ? "Công việc đang tuyển"
+                    ? "Việc làm liên quan"
                     : "Công Việc Mới Nhất"}
                 </h2>
               </div>
@@ -112,7 +110,7 @@ const JobCard = (props: IProps) => {
                         {dayjs(item.updatedAt).fromNow()}
                       </div>
 
-                      <div className="text-lg font-semibold text-gray-800 line-clamp-2">
+                      <div className="text-lg font-semibold text-gray-800 line-clamp-1">
                         {item.name}
                       </div>
 

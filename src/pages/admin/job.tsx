@@ -294,7 +294,7 @@ const JobPage = () => {
 
     //mặc định sort theo updatedAt
     if (Object.keys(sortBy).length === 0) {
-      temp = `${temp}&sort=-updatedAt`;
+      temp = `${temp}&sort=-createdAt`;
     } else {
       temp = `${temp}&${sortBy}`;
     }

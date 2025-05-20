@@ -7,13 +7,16 @@ const ClientJobPage = (props: any) => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
-  const skillParams = queryParams.get("skills");
-  const locationParam = queryParams.get("location");
+  const skillParams = queryParams.get("skills")?.split(",") || [];
+  const locationParam = queryParams.get("location")?.split(",") || [];
   return (
     <div style={{ marginTop: 20 }}>
       <Row gutter={[20, 20]}>
         <Col span={24}>
-          <SearchClient />
+          <SearchClient
+            defaultSkills={skillParams}
+            defaultLocations={locationParam}
+          />
         </Col>
         <Divider />
 

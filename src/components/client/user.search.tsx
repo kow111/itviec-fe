@@ -3,7 +3,13 @@ import { EnvironmentOutlined, MonitorOutlined } from "@ant-design/icons";
 import { LOCATION_LIST, SKILLS_LIST } from "../../config/utils";
 import { useNavigate } from "react-router";
 
-const SearchClient = () => {
+interface IProps {
+  defaultSkills?: string[] | null;
+  defaultLocations?: string[] | null;
+}
+
+const SearchClient = (props: IProps) => {
+  const { defaultSkills, defaultLocations } = props;
   const navigate = useNavigate();
   const optionsSkills = SKILLS_LIST;
   const optionsLocations = LOCATION_LIST;
@@ -23,7 +29,14 @@ const SearchClient = () => {
   };
 
   return (
-    <Form form={form} onFinish={onFinish}>
+    <Form
+      form={form}
+      onFinish={onFinish}
+      initialValues={{
+        skills: defaultSkills,
+        location: defaultLocations,
+      }}
+    >
       <Row gutter={[20, 20]}>
         <Col span={24}>
           <h2 className="text-2xl font-bold">

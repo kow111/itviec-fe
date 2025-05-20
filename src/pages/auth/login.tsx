@@ -32,8 +32,6 @@ const LoginPage = () => {
     }
   }, []);
 
-  console.log("callback", callback);
-
   const onFinish = async (values: any) => {
     const { username, password } = values;
     setIsSubmit(true);

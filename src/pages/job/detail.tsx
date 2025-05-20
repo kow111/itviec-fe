@@ -15,6 +15,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { useNavigate, useParams } from "react-router";
 import ApplyModal from "../../components/client/modal/apply.modal";
 import { useAppSelector } from "../../redux/hooks";
+import JobCard from "../../components/client/card/job.card";
 dayjs.extend(relativeTime);
 
 const ClientJobDetailPage = (props: any) => {
@@ -131,6 +132,7 @@ const ClientJobDetailPage = (props: any) => {
                     {parse(jobDetail.description)}
                   </div>
                 </div>
+                <JobCard showPagination={false} />
               </Col>
 
               <Col span={24} md={8}>

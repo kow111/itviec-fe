@@ -56,13 +56,14 @@ const ClientCompanyDetailPage = () => {
               <Col span={24} md={8}>
                 <div className="bg-white rounded-lg shadow-lg border border-gray-200">
                   <div className="flex flex-col items-center ">
-                    <Avatar
-                      src={companyDetail?.logo}
-                      size={200}
-                      className="mb-4"
-                      shape="square"
-                    />
-                    <h2 className="text-lg font-semibold text-gray-800">
+                    <div className="my-4">
+                      <Avatar
+                        src={companyDetail?.logo}
+                        size={128}
+                        shape="square"
+                      />
+                    </div>
+                    <h2 className="text-xl font-bold text-gray-800">
                       {companyDetail?.name}
                     </h2>
                   </div>
