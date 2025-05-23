@@ -84,6 +84,8 @@ instance.interceptors.response.use(
         error?.response?.data?.message ?? "Có lỗi xảy ra, vui lòng login.";
       //dispatch redux action
       store.dispatch(setRefreshTokenAction({ status: true, message }));
+
+      window.location.href = "/login";
     }
 
     return error?.response?.data ?? Promise.reject(error);
